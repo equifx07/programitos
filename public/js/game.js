@@ -324,14 +324,17 @@ function pick(p, i) {
 }
 function renderProg(p) {
   const prog = S.prog[p], max = S.L.max, n = countOf(p), ro = isPredict() ? ' ro' : '';
-  let h = '';
+  // Estilo code.org: bloque de inicio arriba y bloques encastrados en columna
+  const dots = isPredict() ? '' : `<span class="dots">${'●'.repeat(Math.min(n, 14))}<i>${'●'.repeat(Math.max(0, Math.min(max, 14) - n))}</i></span>`;
+  let h = `<div class="hat"><span class="hat-go">▶</span>${dots}</div>`;
   prog.forEach((it, i) => {
     if (it.t === 'm') h += `<button class="blk d-${it.d}${ro}" data-i="${i}">${arrowSVG(it.d)}</button>`;
-    else h += `<div class="rep${it.open ? ' open' : ''}" data-ri="${i}"><span class="rep-ico">🔁</span><button class="rep-n" data-n="${i}">×${it.n}</button><div class="rep-body">` +
-      it.body.map((d, j) => `<button class="blk sm d-${d}${ro}" data-i="${i}" data-j="${j}">${arrowSVG(d)}</button>`).join('') +
-      (it.open ? '<span class="slot sm">+</span>' : '') + '</div></div>';
+    else h += `<div class="rep${it.open ? ' open' : ''}" data-ri="${i}"><div class="rep-head"><span class="rep-ico">🔁</span><button class="rep-n" data-n="${i}">×${it.n}</button></div><div class="rep-body">` +
+      it.body.map((d, j) => `<button class="blk d-${d}${ro}" data-i="${i}" data-j="${j}">${arrowSVG(d)}</button>`).join('') +
+      (it.open ? '<span class="slot">+</span>' : '') + '</div><div class="rep-foot"></div></div>';
   });
-  if (!isPredict()) for (let k = n; k < Math.min(max, 14); k++) h += '<span class="slot"></span>';
+  const last0 = prog[prog.length - 1];
+  if (!isPredict() && n < max && !(last0 && last0.t === 'rep' && last0.open)) h += '<span class="slot"></span>';
   $('#prog-' + p).innerHTML = h;
   const last = prog[prog.length - 1], open = last && last.t === 'rep' && last.open;
   const rp = $(`#panel-${p} .pal.rp`);
