@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Programitos · ¡Programá con un amigo!</title>
+<meta name="description" content="Juego de programación secuencial para jugar de a dos. Para chicos de 1er grado.">
+<meta name="theme-color" content="#7fd3ff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="sky">
+  <div class="sun"></div>
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <div class="hill h1"></div><div class="hill h2"></div>
+</div>
+
+<!-- INICIO -->
+<section id="scr-start" class="screen active">
+  <div class="start-card">
+    <h1 class="logo"><span>P</span><span>r</span><span>o</span><span>g</span><span>r</span><span>a</span><span>m</span><span>i</span><span>t</span><span>o</span><span>s</span></h1>
+    <p class="subtitle">¡Programá con un amigo!</p>
+    <div class="duo">
+      <div class="duo-char" id="start-A"></div>
+      <div class="duo-heart">💞</div>
+      <div class="duo-char" id="start-B"></div>
+    </div>
+    <p class="start-hint">Este juego se juega <b>de a DOS</b> 👫<br>Cada uno aprieta su botón para empezar.</p>
+    <div class="start-btns">
+      <button class="join join-A" data-join="A"><span class="join-txt">¡Yo soy Tito!</span><span class="key">E</span></button>
+      <button class="join join-B" data-join="B"><span class="join-txt">¡Yo soy Lula!</span><span class="key">Enter</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA -->
+<section id="scr-map" class="screen">
+  <header class="topbar">
+    <button class="icon-btn" id="map-back" title="Inicio">🏠</button>
+    <div class="map-title">Elijan un nivel</div>
+    <div class="tools">
+      <button class="icon-btn" id="btn-album" title="Álbum de figuritas">📒</button>
+      <button class="icon-btn snd-toggle" title="Sonido">🔊</button>
+      <button class="icon-btn" id="btn-teacher" title="Docente">🍎</button>
+    </div>
+  </header>
+  <div class="map-wrap">
+    <div class="map-side" id="map-A"></div>
+    <div class="levels" id="levels"></div>
+    <div class="map-side" id="map-B"></div>
+  </div>
+</section>
+
+<!-- JUEGO -->
+<section id="scr-game" class="screen">
+  <header class="topbar">
+    <button class="icon-btn" id="btn-map" title="Mapa">🗺️</button>
+    <div class="lvl-title"><span class="lvl-num" id="lvl-num">1</span><span id="lvl-name"></span></div>
+    <div class="tools">
+      <button class="icon-btn" id="btn-hint" title="Pista">💡</button>
+      <button class="icon-btn" id="btn-speed" title="Velocidad">🐢</button>
+      <button class="icon-btn snd-toggle" title="Sonido">🔊</button>
+      <button class="icon-btn" id="btn-voice" title="Voz">🗣️</button>
+      <button class="icon-btn" id="btn-full" title="Pantalla completa">⛶</button>
+    </div>
+  </header>
+  <div class="game-grid">
+    <aside class="panel" id="panel-A" data-p="A"></aside>
+    <main class="center">
+      <div class="bubble">
+        <div class="owl">🦉</div>
+        <p id="bubble-text"></p>
+        <button class="icon-btn small" id="btn-say" title="Escuchar">🔊</button>
+      </div>
+      <div class="board-wrap" id="board-wrap"><div id="board"></div></div>
+    </main>
+    <aside class="panel" id="panel-B" data-p="B"></aside>
+  </div>
+</section>
+
+<!-- CUENTA REGRESIVA -->
+<div class="overlay" id="ov-count"><div class="count-num" id="count-num">3</div></div>
+
+<!-- ERROR -->
+<div class="overlay" id="ov-fail">
+  <div class="card fail-card">
+    <div class="fail-face" id="fail-face"></div>
+    <h2 id="fail-title">¡Ups!</h2>
+    <p id="fail-text"></p>
+    <button class="big-btn" id="btn-retry">🔄 Probar de nuevo</button>
+  </div>
+</div>
+
+<!-- GANARON -->
+<div class="overlay" id="ov-win">
+  <div class="card win-card">
+    <h2 id="win-title">¡Genial!</h2>
+    <div class="win-stars" id="win-stars"></div>
+    <div class="win-duo"><div id="win-A"></div><div class="sticker" id="win-sticker"></div><div id="win-B"></div></div>
+    <p class="win-msg" id="win-msg">¡Ganaron una figurita!</p>
+    <p class="hf-hint">¡Chóquenla! Cada uno aprieta su mano ✋</p>
+    <div class="hf-btns">
+      <button class="hf hf-A" data-hf="A">✋<span class="key">E</span></button>
+      <button class="hf hf-B" data-hf="B">✋<span class="key">Enter</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="overlay" id="ov-final">
+  <div class="card final-card">
+    <div class="trophy">🏆</div>
+    <h2>¡Son programadores!</h2>
+    <p>Tito y Lula están súper felices. ¡Terminaron todos los niveles trabajando en equipo!</p>
+    <div class="win-duo"><div id="final-A"></div><div id="final-B"></div></div>
+    <div class="row-btns">
+      <button class="big-btn" id="final-album">📒 Ver figuritas</button>
+      <button class="big-btn alt" id="final-map">🗺️ Mapa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ÁLBUM -->
+<div class="overlay" id="ov-album">
+  <div class="card album-card">
+    <h2>📒 Álbum de figuritas</h2>
+    <div class="album" id="album"></div>
+    <button class="big-btn" data-close="ov-album">¡Listo!</button>
+  </div>
+</div>
+
+<!-- DOCENTE -->
+<div class="overlay" id="ov-teacher">
+  <div class="card teacher-card">
+    <h2>🍎 Modo docente</h2>
+    <div id="teacher-lock">
+      <p>Para entrar, resolvé: <b id="t-q"></b></p>
+      <input id="t-ans" type="number" inputmode="numeric" autocomplete="off">
+      <div class="row-btns">
+        <button class="big-btn" id="t-ok">Entrar</button>
+        <button class="big-btn alt" data-close="ov-teacher">Cerrar</button>
+      </div>
+    </div>
+    <div id="teacher-panel" hidden>
+      <div class="row-btns">
+        <button class="big-btn" id="t-unlock">🔓 Desbloquear todo</button>
+        <button class="big-btn alt" id="t-reset">♻️ Borrar progreso</button>
+      </div>
+      <h3>Ir a un nivel</h3>
+      <div class="t-levels" id="t-levels"></div>
+      <h3>Cómo se juega</h3>
+      <ul class="t-help">
+        <li>Juegan <b>dos chicos por compu</b>: uno maneja a Tito (izquierda) y el otro a Lula (derecha).</li>
+        <li>Cada uno arma la secuencia de su personaje. El programa corre cuando <b>los dos</b> aprietan LISTO.</li>
+        <li>Niveles 1–5: secuencias y direcciones · 6–8: cooperación (uno abre la puerta del otro) · 9–12: bloque <b>repetir</b>.</li>
+        <li>Teclado Tito: <b>W A S D</b> flechas, <b>R</b> repetir, <b>Q</b> borrar, <b>E</b> listo.</li>
+        <li>Teclado Lula: <b>flechas</b>, <b>Shift derecho</b> repetir, <b>Backspace</b> borrar, <b>Enter</b> listo.</li>
+        <li>Tocar un bloque del programa lo borra. Tocar el número del 🔁 cambia cuántas veces repite.</li>
+        <li>El progreso se guarda en esta compu.</li>
+      </ul>
+      <button class="big-btn alt" data-close="ov-teacher">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script src="js/levels.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
