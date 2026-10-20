@@ -1,10 +1,19 @@
-// Mapa: . pasto | f flores (se puede pisar) | # árbol | R piedra | ~ agua
+// Mapa: . piso | f decoración (se puede pisar) | # obstáculo | ~ agua/agujero
 // A/B = inicio de Tito/Lula | a/b = casita de Tito/Lula | * estrella
 // o = botón mágico | D = puerta (se abre cuando alguien pisa el botón)
+// mode 'predict': el programa viene armado (pre) y hay que adivinar en qué fruta termina (opts)
+// pre: programa ya cargado ("rrd", "3(rd)l" = repetir 3 veces → ↓)
+(typeof window !== 'undefined' ? window : globalThis).WORLDS = [
+  { name: 'La pradera', emoji: '🌳', theme: 'Secuencias' },
+  { name: 'La playa', emoji: '🏖️', theme: 'Giros' },
+  { name: 'La nieve', emoji: '⛄', theme: 'Trabajo en equipo' },
+  { name: 'El espacio', emoji: '🚀', theme: 'Repetir' }
+];
 (typeof window !== 'undefined' ? window : globalThis).LEVELS = [
+  /* ---------------- Mundo 1: Pradera ---------------- */
   {
-    name: '¡Hola, amigos!', tools: ['r'], max: 5, first: 'A',
-    text: '¡Hola! Cada uno lleva a su amigo a su casita. Toquen la flecha para darle pasos. Cuando terminen, los dos aprietan LISTO.',
+    name: '¡Hola, amigos!', tools: ['r'], max: 5,
+    text: '🏠 ➡️', say: '¡Llevá a tu amigo a su casita! Tocá la flecha. Después, los dos aprietan el botón verde.',
     map: ['.f...f.',
           '.A..a..',
           '.......',
@@ -12,8 +21,8 @@
           'f....f.']
   },
   {
-    name: 'Cada uno para un lado', tools: ['l', 'r'], max: 6, first: 'A',
-    text: '¡Cada uno para un lado! Tito va para la derecha y Lula para la izquierda. ¡Miren bien las flechas!',
+    name: 'Cada uno para un lado', tools: ['l', 'r'], max: 6,
+    text: '⬅️ ➡️', say: '¡Cada uno para su lado!',
     map: ['f.....f',
           '.A...a.',
           '...f...',
@@ -21,8 +30,17 @@
           'f.....f']
   },
   {
-    name: 'Arriba y abajo', tools: ['u', 'd', 'l', 'r'], max: 6, first: 'A',
-    text: '¡Ahora hay flechas para arriba y para abajo! Junten las estrellas que están en el camino.',
+    name: 'Más lejos', tools: ['l', 'r'], max: 7,
+    text: '⭐ ⭐', say: '¡Juntá las estrellas!',
+    map: ['f.....f',
+          '.A.*.*a',
+          'f.f.f.f',
+          'b*.*.B.',
+          'f.....f']
+  },
+  {
+    name: 'Arriba y abajo', tools: ['u', 'd', 'l', 'r'], max: 6,
+    text: '⬆️ ⬇️', say: '¡Arriba y abajo!',
     map: ['.a.f.B.',
           '...#...',
           '.*.#.*.',
@@ -30,25 +48,85 @@
           '.A.f.b.']
   },
   {
-    name: '¡A doblar!', tools: ['u', 'd', 'l', 'r'], max: 8, first: 'A',
-    text: '¡Hay que doblar! Sigan el camino con el dedo antes de poner las flechas.',
+    name: '¡Adivinen!', mode: 'predict', tools: [], max: 9,
+    text: '🤔 🍎🍌🍇', say: '¿En qué fruta termina? Elegí la fruta y apretá el botón verde.',
+    pre: { A: 'rrr', B: 'llll' },
+    opts: { A: [[2, 1], [3, 1], [5, 1]], B: [[4, 3], [2, 3], [0, 3]] },
+    map: ['f.....f',
+          'A......',
+          '..f.f..',
+          '......B',
+          'f.....f']
+  },
+  {
+    name: '¡Un bichito!', tools: ['u', 'd', 'l', 'r'], max: 5,
+    text: '🐛 → 👆', say: '¡Un bichito! Una flecha está mal. Tocala para girarla.',
+    pre: { A: 'rrlr', B: 'lllu' },
+    map: ['.......',
+          '.A...a.',
+          '..f.f..',
+          '.b...B.',
+          '.......']
+  },
+  /* ---------------- Mundo 2: Playa ---------------- */
+  {
+    name: '¡A doblar!', tools: ['u', 'd', 'l', 'r'], max: 8,
+    text: '↪️', say: '¡A doblar!',
     map: ['A.*#B..',
           '##.#.#*',
           '.a.#.#b',
           'f..#..f']
   },
   {
-    name: 'Espejito', tools: ['u', 'd', 'l', 'r'], max: 10, first: 'A',
-    text: '¡Espejito! Tito y Lula hacen caminos iguales pero al revés. ¿Pueden juntar todas las estrellas?',
-    map: ['A..~..B',
-          '##*~*##',
-          '*..~..*',
+    name: 'Por la orilla', tools: ['u', 'd', 'l', 'r'], max: 7,
+    text: '🌊 ❌', say: '¡No se mojen!',
+    map: ['A##~##B',
           '.##~##.',
-          'a..~..b']
+          '*##~##*',
+          '..a~b..',
+          'f.f~f.f']
   },
   {
+    name: '¿Dónde quedan?', mode: 'predict', tools: [], max: 9,
+    text: '🤔 🍎🍌🍇', say: '¿En qué fruta termina?',
+    pre: { A: 'rrdd', B: 'uull' },
+    opts: { A: [[2, 0], [0, 2], [2, 2]], B: [[4, 2], [6, 2], [4, 4]] },
+    map: ['A......',
+          '...f...',
+          '.......',
+          '.f.....',
+          '......B']
+  },
+  {
+    name: 'Zigzag', tools: ['u', 'd', 'l', 'r'], max: 9,
+    text: '〰️ ⭐', say: '¡Zigzag!',
+    map: ['A*#~#*B',
+          '#.#~#.#',
+          '#.*~*.#',
+          '##.~.##',
+          '#a.~.b#']
+  },
+  {
+    name: 'Cangrejos traviesos', tools: ['u', 'd', 'l', 'r'], max: 5,
+    text: '🐛', say: '¡Otro bichito! Arreglen las flechas.',
+    pre: { A: 'rrdl', B: 'llld' },
+    map: ['A..~..B',
+          '##*~*##',
+          'f.a~b.f']
+  },
+  {
+    name: 'Caminos cruzados', tools: ['u', 'd', 'l', 'r'], max: 12,
+    text: '⭐ ❓', say: '¿Qué camino tiene más estrellas?',
+    map: ['b..*..a',
+          '.##.##.',
+          '...*...',
+          '.##.##.',
+          'A.....B']
+  },
+  /* ---------------- Mundo 3: Nieve ---------------- */
+  {
     name: 'La puerta mágica', tools: ['u', 'd', 'l', 'r'], max: 7, first: 'A',
-    text: '¡Puerta mágica! Tito tiene que pisar el botón rojo para abrirle la puerta a Lula. Primero camina Tito.',
+    text: '🔴 → 🚪', say: 'Tito pisa el botón rojo y se abre la puerta de Lula.',
     map: ['A..~B..',
           '.#.~##D',
           '.oa~ffb',
@@ -56,15 +134,26 @@
   },
   {
     name: '¡Ahora ayuda Lula!', tools: ['u', 'd', 'l', 'r'], max: 8, first: 'B',
-    text: '¡Ahora ayuda Lula! Esta vez Lula camina primero y tiene que pisar el botón rojo para abrirle la puerta a Tito.',
+    text: '🔴 → 🚪', say: 'Ahora Lula pisa el botón rojo para abrirle a Tito.',
     map: ['A..~b.o',
           '##D~.#.',
           'a..~..B',
           'f.f~f.f']
   },
   {
+    name: 'Huellas en la nieve', mode: 'predict', tools: [], max: 9,
+    text: '🤔 🍎🍌🍇', say: '¿En qué fruta termina?',
+    pre: { A: 'rrddr', B: 'uull' },
+    opts: { A: [[2, 2], [3, 1], [3, 2]], B: [[5, 2], [4, 2], [4, 1]] },
+    map: ['A.....f',
+          'f......',
+          '.......',
+          'f......',
+          'f.....B']
+  },
+  {
     name: 'El laberinto', tools: ['u', 'd', 'l', 'r'], max: 12, first: 'A',
-    text: '¡Un laberinto! Tito abre la puerta de Lula. Hablen entre ustedes y planeen juntos el camino.',
+    text: '🌀 🔴 🚪', say: '¡Un laberinto! Tito abre la puerta.',
     map: ['A.#~..B',
           '#.#~.##',
           '..*~D.*',
@@ -72,23 +161,62 @@
           '.oa~b..']
   },
   {
-    name: '¡Bloque REPETIR!', tools: ['u', 'd', 'l', 'r', 'rep'], max: 2, first: 'A',
-    text: '¡Bloque nuevo: REPETIR! Solo pueden usar 2 bloques. Pongan repetir, una flecha adentro, y toquen el número para elegir cuántas veces.',
+    name: '¡Se olvidó del botón!', tools: ['u', 'd', 'l', 'r'], max: 7, first: 'A',
+    text: '🐛 🔴', say: '¡Tito se olvidó del botón rojo!',
+    pre: { A: 'rr', B: 'rrdd' },
+    map: ['A.a~B..',
+          '.#.~##D',
+          '.o.~ffb',
+          'f..~..f']
+  },
+  {
+    name: 'Equipo nevado', tools: ['u', 'd', 'l', 'r'], max: 10, first: 'B',
+    text: '🔴 🚪 ⭐', say: 'Lula abre la puerta. ¡Busquen las estrellas!',
+    map: ['a..~.*B',
+          '##D~.#.',
+          '.*.~.#o',
+          '.##~.#.',
+          'A..~b..']
+  },
+  /* ---------------- Mundo 4: Espacio ---------------- */
+  {
+    name: '¡Bloque REPETIR!', tools: ['u', 'd', 'l', 'r', 'rep'], max: 2,
+    text: '🔁 ✨', say: '¡Bloque nuevo: repetir! Poné repetir, una flecha adentro, y tocá el número.',
     map: ['A.*.*.a',
           'f#f#f#f',
           'b.*.*.B']
   },
   {
-    name: 'La escalera', tools: ['u', 'd', 'l', 'r', 'rep'], max: 3, first: 'A',
-    text: '¡Una escalera! Adentro del repetir pueden poner dos flechas. ¿Qué pasos se repiten?',
+    name: 'Ascensor espacial', tools: ['u', 'd', 'l', 'r', 'rep'], max: 2,
+    text: '🔁 ⬆️ ⬇️', say: '¡Repetí!',
+    map: ['A.f.f.b',
+          '.#...#.',
+          '*.f.f.*',
+          '.#...#.',
+          'a.f.f.B']
+  },
+  {
+    name: 'La escalera', tools: ['u', 'd', 'l', 'r', 'rep'], max: 3,
+    text: '🔁 🪜', say: '¡Una escalera! Dos flechas adentro del repetir.',
     map: ['A.#b.##',
           '#.*#*.#',
           '##..#..',
           'f##a#fB']
   },
   {
-    name: 'Repetir y algo más', tools: ['u', 'd', 'l', 'r', 'rep'], max: 4, first: 'A',
-    text: 'Un paso antes, después el repetir, y un paso al final. ¡Solo cuatro bloques!',
+    name: 'Adivinanza espacial', mode: 'predict', tools: [], max: 9,
+    text: '🤔 🔁', say: '¿En qué fruta termina?',
+    pre: { A: '2(rd)r', B: '3(u)2(l)' },
+    opts: { A: [[2, 2], [3, 2], [4, 2]], B: [[4, 0], [5, 1], [4, 1]] },
+    map: ['A.....f',
+          '.......',
+          '.......',
+          'f......',
+          '......B']
+  },
+  {
+    name: 'Repetir y algo más', tools: ['u', 'd', 'l', 'r', 'rep'], max: 4,
+    text: '➡️ 🔁 ⬆️', say: 'Un paso, repetir, y un paso.',
     map: ['A####a#',
           '.*..*..',
           '~~~~~~~',
@@ -97,7 +225,7 @@
   },
   {
     name: '¡Gran final!', tools: ['u', 'd', 'l', 'r', 'rep'], max: 4, first: 'A',
-    text: '¡El gran final! Usen el repetir, junten las estrellas y abran la puerta. ¡Ustedes pueden!',
+    text: '🏆', say: '¡El gran final!',
     map: ['A.f#f#B',
           '#.*#f#.',
           '#f.o#~D',
